@@ -66,14 +66,6 @@ test('Check if DataFromBigPullRequest is parsed correctly and reflected by the o
 
 });
 
-test('Check what happens if I try to access a unknown key', async () => {
-  const data = PullRequest.CreateFromJson({});
-});
-
-const printString = (str: any) => {
-  console.log(str['forname']);
-}
-
 const CheckStatusChecks = (checks: IStatusCheck[], index: number) => {
   expect(checks.length).toBe(DataFromBigPullRequest['statusCheckRollup'].length);
   
