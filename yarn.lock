@@ -4593,6 +4593,7 @@ __metadata:
     jest: 29.5.0
     prettier: 2.8.7
     ts-jest: 29.1.0
+    ts-markdown: ^0.3.0-beta.1
     typescript: 5.0.3
   languageName: unknown
   linkType: soft
@@ -4978,6 +4979,13 @@ __metadata:
   bin:
     ts-jest: cli.js
   checksum: 535dc42ad523cbe1e387701fb2e448518419b515c082f09b25411f0b3dd0b854cf3e8141c316d6f4b99883aeb4a4f94159cbb1edfb06d7f77ea6229fadb2e1bf
+  languageName: node
+  linkType: hard
+
+"ts-markdown@npm:^0.3.0-beta.1":
+  version: 0.3.0-beta.1
+  resolution: "ts-markdown@npm:0.3.0-beta.1"
+  checksum: 6dfee949fe0facdc19df32e15e7af2e90756e9c2b6b16eeb2837faf3b4ab6691d5fe01363a760aadadff0d1d088faefc27d0bcf50636340cc6c89890129d0746
   languageName: node
   linkType: hard
 
