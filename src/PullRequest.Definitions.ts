@@ -19,7 +19,7 @@ export class FileChangeSummary implements IFileChangeSummary {
         const summary = new FileChangeSummary();
         summary.additions = json['additions'];
         summary.deletions = json['deletions'];
-        summary.commits = json['commits'];
+        summary.commits = json['commits'].length;
         summary.changedFilesList = json['changedFiles'];
         return summary;
     }
@@ -63,6 +63,10 @@ export class PullRequestComment implements IPullRequestComment {
 }
 
 function ParseArrayOfType<T>(array: any[],cb:(wa: any) => T): T[] {
+    if (!array) {
+        return new Array<T>();
+    }
+    
     const parsedArray: T[] = [];
     for (const item of array) {
         parsedArray.push(cb(item));

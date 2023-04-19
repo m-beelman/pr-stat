@@ -15,9 +15,13 @@ export interface IPullRequestReview {
 }
 
 export interface IPullRequestComment {
+    authorAssociation: string;
     authorLogin: string;
     createdAt: string;
     body: string;
+    id: string;
+    url: string;
+    viewerDidAuthor: boolean;
 }
 
 export interface ICommitAuthor {
