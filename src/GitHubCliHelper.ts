@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Koninklijke Philips N.V.
 
 // use util to make exec a promise
-const util = require('util');
+import util from 'util';
 const exec = util.promisify(require('child_process').exec);
 const gh_cli_arguments = `--json "additions,assignees,author,baseRefName,body,changedFiles,closed,closedAt,comments,commits,createdAt,deletions,files,headRefName,headRefOid,headRepository,headRepositoryOwner,id,isCrossRepository,isDraft,labels,latestReviews,maintainerCanModify,mergeCommit,mergeStateStatus,mergeable,mergedAt,mergedBy,milestone,number,potentialMergeCommit,projectCards,projectItems,reactionGroups,reviewDecision,reviewRequests,reviews,state,statusCheckRollup,title,updatedAt,url"`
 
@@ -16,7 +16,7 @@ const GetGitHubEnvRepoUrl = ():string | undefined=> {
 
 const GitHubEnvRepoUrl = GetGitHubEnvRepoUrl();
 
-export const GetPullRequestData = async (pullRequestNumber: number, repo:string='') => {
+export const GetPullRequestData = async (pullRequestNumber: number, repo='') => {
   let pullRequestData = undefined  
   let repoName = ''
   if (repo !== '')

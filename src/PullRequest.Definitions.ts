@@ -11,9 +11,9 @@ import {
     } from "./Interfaces/PullRequestTypes";
 
 export class FileChangeSummary implements IFileChangeSummary {
-    public additions: number = 0;
-    public deletions: number = 0;
-    public commits: number = 0;
+    public additions = 0;
+    public deletions = 0;
+    public commits = 0;
     public changedFilesList: string[] = [];
     public static CreateFromJson(json: any): IFileChangeSummary {
         const summary = new FileChangeSummary();
@@ -26,10 +26,10 @@ export class FileChangeSummary implements IFileChangeSummary {
 }
 
 export class PullRequestReview implements IPullRequestReview {
-    public authorLogin: string = "";
-    public state: string = "";
-    public submittedAt: string = "";
-    public body: string = "";
+    public authorLogin = "";
+    public state = "";
+    public submittedAt = "";
+    public body = "";
     public static CreateFromJson(json: any): IPullRequestReview {
         const review = new PullRequestReview();
         review.authorLogin = json['author']['login'];
@@ -41,13 +41,13 @@ export class PullRequestReview implements IPullRequestReview {
 }
 
 export class PullRequestComment implements IPullRequestComment {
-    public authorLogin: string = "";
-    public createdAt: string = "";
-    public body: string = "";
-    public authorAssociation: string = "";
-    public id: string = "";
-    public url: string = "";
-    public viewerDidAuthor: boolean = false;
+    public authorLogin = "";
+    public createdAt = "";
+    public body = "";
+    public authorAssociation = "";
+    public id = "";
+    public url = "";
+    public viewerDidAuthor = false;
 
     public static CreateFromJson(json: any): IPullRequestComment {
         const comment = new PullRequestComment();
@@ -76,10 +76,10 @@ function ParseArrayOfType<T>(array: any[],cb:(wa: any) => T): T[] {
 
 export class CommitAuthor implements ICommitAuthor
 {
-    public email: string = "";
-    public name: string = "";
-    public login: string = "";
-    public id: string = "";
+    public email = "";
+    public name = "";
+    public login = "";
+    public id = "";
     public static CreateFromJson(json: any): ICommitAuthor {
         const author = new CommitAuthor();
         author.email = json['email'];
@@ -92,12 +92,12 @@ export class CommitAuthor implements ICommitAuthor
 
 export class PullRequestCommit implements IPullRequestCommit{
     public authors: ICommitAuthor[] = [];
-    public committer: string = "";
-    public authorDate: string = "";
-    public commitDate: string = "";
-    public commitHeader: string = "";
-    public commitBody: string = "";
-    public commitId: string = "";
+    public committer = "";
+    public authorDate = "";
+    public commitDate = "";
+    public commitHeader = "";
+    public commitBody = "";
+    public commitId = "";
     public static CreateFromJson(json: any): IPullRequestCommit {
         const commit = new PullRequestCommit();
         commit.authorDate = json['authoredDate'];
@@ -113,13 +113,13 @@ export class PullRequestCommit implements IPullRequestCommit{
 }
 
 export class StatusCheck implements IStatusCheck {
-    public workflowName: string = "";
-    public startedAt: string = "";
-    public completedAt: string = "";
-    public conclusion: string = "";
-    public status: string = "";
-    public name: string = "";
-    public detailsUrl: string = "";    
+    public workflowName = "";
+    public startedAt = "";
+    public completedAt = "";
+    public conclusion = "";
+    public status = "";
+    public name = "";
+    public detailsUrl = "";    
     public static CreateFromJson(json: any): IStatusCheck {
         const statusCheck = new StatusCheck();
         statusCheck.workflowName = json['workflowName'];
@@ -133,23 +133,23 @@ export class StatusCheck implements IStatusCheck {
 }
 
 export class PullRequest implements IPullRequest {
-    public id: number = 0;
-    public title: string = "";
-    public createdAt: string = "";
-    public updatedAt: string = "";
-    public closedAt: string = "";
-    public mergedAt: string = "";
-    public body: string = "";
-    public author: string = "";
-    public state: string = "";
-    public mergeable: string = "";
-    public mergeStateStatus: string = "";
-    public isDraft: boolean = false;
-    public baseRefName: string = "";
-    public headRefName: string = "";
-    public headRefOid: string = "";
-    public headRepository: string = "";
-    public headRepositoryOwner: string = "";
+    public id = 0;
+    public title = "";
+    public createdAt = "";
+    public updatedAt = "";
+    public closedAt = "";
+    public mergedAt = "";
+    public body = "";
+    public author = "";
+    public state = "";
+    public mergeable = "";
+    public mergeStateStatus = "";
+    public isDraft = false;
+    public baseRefName = "";
+    public headRefName = "";
+    public headRefOid = "";
+    public headRepository = "";
+    public headRepositoryOwner = "";
     public commits: IPullRequestCommit[] = [];
     public reviews: IPullRequestReview[] = [];
     public comments: IPullRequestComment[] = [];

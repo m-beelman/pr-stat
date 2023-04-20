@@ -5,13 +5,13 @@ import { IReport, IReportMeasurementEntry, MeasureCallback } from "./Interfaces/
 
 export class ReportMeasurementEntry implements IReportMeasurementEntry
 {
-    public Id: string = "";
-    public Label: string = "";
+    public Id = "";
+    public Label = "";
     public PresentationValue: string | number = "";
     public Value: string | number = "";
-    public ConfigurationName: string = "";
+    public ConfigurationName = "";
     public ReportMeasureCallback: MeasureCallback = (pr: IPullRequest) => { return ""; };
-    constructor(id: string = "", label: string = "", presentationValue: string | number = "", value: string | number = "", configurationName: string = "", measureCallback: MeasureCallback = (pr: IPullRequest) => "")
+    constructor(id = "", label = "", presentationValue: string | number = "", value: string | number = "", configurationName = "", measureCallback: MeasureCallback = (pr: IPullRequest) => "")
     {
         this.Id = id;
         this.Label = label;
@@ -24,7 +24,7 @@ export class ReportMeasurementEntry implements IReportMeasurementEntry
 
 export class Report implements IReport
 {
-    public Id: string = "";
-    public Description: string = "";
+    public Id = "";
+    public Description = "";
     public Entries: ReportMeasurementEntry[] = [];
 }
