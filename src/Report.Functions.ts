@@ -1,27 +1,27 @@
 // Copyright (c) 2023 Koninklijke Philips N.V.
 
-import { IPullRequest } from "./Interfaces/PullRequestTypes";
+import { IPullRequest } from './Interfaces/PullRequestTypes'
 
 export const GetAddedLines = (pr: IPullRequest): number => {
-    return pr.fileChangeSummary.additions;
+  return pr.fileChangeSummary.additions
 }
 
 export const GetDeletedLines = (pr: IPullRequest): number => {
-    return pr.fileChangeSummary.deletions;
+  return pr.fileChangeSummary.deletions
 }
 
 export const GetChangedFilesCount = (pr: IPullRequest): number => {
-    return pr.fileChangeSummary.changedFilesList.length;
+  return pr.fileChangeSummary.changedFilesList.length
 }
 
 export const GetCommitsCount = (pr: IPullRequest): number => {
-    return pr.fileChangeSummary.commits;
+  return pr.fileChangeSummary.commits
 }
 
 export const GetReviewCount = (pr: IPullRequest): number => {
-    return pr.reviews.length;
+  return pr.reviews.length
 }
 
 export const GetCommentCount = (pr: IPullRequest): number => {
-    return pr.comments.length;
+  return pr.comments.length
 }
