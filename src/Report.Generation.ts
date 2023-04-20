@@ -2,7 +2,7 @@
 
 import { IPullRequest } from "./Interfaces/PullRequestTypes";
 import { IReport } from "./Interfaces/ReportTypes";
-import { tsMarkdown, table } from "ts-markdown";
+import { tsMarkdown, table, TableEntry, H1Entry } from "ts-markdown";
 
 export class ReportGenerator {
     public static GenerateReport(pr: IPullRequest, report: IReport): IReport {
@@ -19,12 +19,12 @@ export class ReportGenerator {
         return tsMarkdown([header, table]);
     }
 
-    public GenerateHeader(pr: IPullRequest): any {
+    public GenerateHeader(pr: IPullRequest): H1Entry {
         const title = {h1: `Pull Request Report for PR #${pr.id}`}
         return title;
     }
 
-    public GenerateMeasureTable(pr: IPullRequest, report: IReport): any {
+    public GenerateMeasureTable(pr: IPullRequest, report: IReport): TableEntry {
         report.Entries.forEach(entry => {
             entry.Value = entry.ReportMeasureCallback(pr);
         });

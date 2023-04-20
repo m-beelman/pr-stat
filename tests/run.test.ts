@@ -26,39 +26,39 @@ test('Gather PR-Data for unknown Repo', async () => {
   expect(exceptionRaised).toBeTruthy();
 })
 
-test('Transfer to internal object model', async () => { 
+test('Transfer to internal object model', () => { 
   const data = 
   PullRequest.CreateFromJson(DataFromBigPullRequest);
-  console.log(data);
 })
 
-test('Check if DataFromBigPullRequest is parsed correctly and reflected by the object model consistently', async () => {
+test('Check if DataFromBigPullRequest is parsed correctly and reflected by the object model consistently', () => {
+  const SampleData = DataFromBigPullRequest as {number:number, title:string, createdAt:string, updatedAt:string, closedAt:string, mergedAt:string, body:string, author:string, state:string, mergeable:string, mergeStateStatus:string, isDraft:boolean, baseRefName:string, headRefName:string, headRefOid:string, headRepository:string, headRepositoryOwner:string, commits:unknown[], reviews:unknown[], comments:unknown[], statusCheckRollup:unknown[]}
   // parse data from DataFromBigPullRequest
   const data = PullRequest.CreateFromJson(DataFromBigPullRequest);
   // check if the data is parsed correctly
-  expect(data.id).toBe(DataFromBigPullRequest['number']);
-  expect(data.title).toBe(DataFromBigPullRequest['title']);
-  expect(data.createdAt).toBe(DataFromBigPullRequest['createdAt']);
-  expect(data.updatedAt).toBe(DataFromBigPullRequest['updatedAt']);
-  expect(data.closedAt).toBe(DataFromBigPullRequest['closedAt']);
-  expect(data.mergedAt).toBe(DataFromBigPullRequest['mergedAt']);
-  expect(data.body).toBe(DataFromBigPullRequest['body']);
-  expect(data.author).toBe(DataFromBigPullRequest['author']);
-  expect(data.state).toBe(DataFromBigPullRequest['state']);
-  expect(data.mergeable).toBe(DataFromBigPullRequest['mergeable']);
-  expect(data.mergeStateStatus).toBe(DataFromBigPullRequest['mergeStateStatus']);
-  expect(data.isDraft).toBe(DataFromBigPullRequest['isDraft']);
-  expect(data.baseRefName).toBe(DataFromBigPullRequest['baseRefName']);
-  expect(data.headRefName).toBe(DataFromBigPullRequest['headRefName']);
-  expect(data.headRefOid).toBe(DataFromBigPullRequest['headRefOid']);
-  expect(data.headRepository).toBe(DataFromBigPullRequest['headRepository']);
-  expect(data.headRepositoryOwner).toBe(DataFromBigPullRequest['headRepositoryOwner']);
+  expect(data.id).toBe(SampleData['number']);
+  expect(data.title).toBe(SampleData['title']);
+  expect(data.createdAt).toBe(SampleData['createdAt']);
+  expect(data.updatedAt).toBe(SampleData['updatedAt']);
+  expect(data.closedAt).toBe(SampleData['closedAt']);
+  expect(data.mergedAt).toBe(SampleData['mergedAt']);
+  expect(data.body).toBe(SampleData['body']);
+  expect(data.author).toBe(SampleData['author']);
+  expect(data.state).toBe(SampleData['state']);
+  expect(data.mergeable).toBe(SampleData['mergeable']);
+  expect(data.mergeStateStatus).toBe(SampleData['mergeStateStatus']);
+  expect(data.isDraft).toBe(SampleData['isDraft']);
+  expect(data.baseRefName).toBe(SampleData['baseRefName']);
+  expect(data.headRefName).toBe(SampleData['headRefName']);
+  expect(data.headRefOid).toBe(SampleData['headRefOid']);
+  expect(data.headRepository).toBe(SampleData['headRepository']);
+  expect(data.headRepositoryOwner).toBe(SampleData['headRepositoryOwner']);
 
 
-  expect(data.commits.length).toBe(DataFromBigPullRequest['commits'].length);
-  expect(data.reviews.length).toBe(DataFromBigPullRequest['reviews'].length);
-  expect(data.comments.length).toBe(DataFromBigPullRequest['comments'].length);
-  expect(data.statusChecks.length).toBe(DataFromBigPullRequest['statusCheckRollup'].length);
+  expect(data.commits.length).toBe(SampleData['commits'].length);
+  expect(data.reviews.length).toBe(SampleData['reviews'].length);
+  expect(data.comments.length).toBe(SampleData['comments'].length);
+  expect(data.statusChecks.length).toBe(SampleData['statusCheckRollup'].length);
   CheckCommits(data.commits, 1);
   CheckReviews(data.reviews, 0);
   CheckComments(data.comments, 1);
@@ -67,10 +67,10 @@ test('Check if DataFromBigPullRequest is parsed correctly and reflected by the o
 });
 
 const CheckStatusChecks = (checks: IStatusCheck[], index: number) => {
-  expect(checks.length).toBe(DataFromBigPullRequest['statusCheckRollup'].length);
-  
+  const SampleData = DataFromBigPullRequest as {statusCheckRollup:unknown[]}
+  expect(checks.length).toBe(SampleData['statusCheckRollup'].length);
   const statusCheck = checks[index];
-  const statusCheckFromSampleData = DataFromBigPullRequest['statusCheckRollup'][index];
+  const statusCheckFromSampleData = SampleData['statusCheckRollup'][index] as {completedAt:string, conclusion:string, name:string, startedAt:string, status:string, workflowName:string};  
   expect(statusCheck.completedAt).toBe(statusCheckFromSampleData['completedAt']);
   expect(statusCheck.conclusion).toBe(statusCheckFromSampleData['conclusion']);
   expect(statusCheck.name).toBe(statusCheckFromSampleData['name']);
@@ -81,10 +81,11 @@ const CheckStatusChecks = (checks: IStatusCheck[], index: number) => {
 }
 
 const CheckComments = (comments: IPullRequestComment[], index:number) => {
-  expect(comments.length).toBe(DataFromBigPullRequest['comments'].length);
+  const SampleData = DataFromBigPullRequest as {comments:unknown[]};
+  expect(comments.length).toBe(SampleData['comments'].length);
 
   const comment = comments[index];
-  const commentFromSampleData = DataFromBigPullRequest['comments'][index];
+  const commentFromSampleData = SampleData['comments'][index] as {author:{login: string}, authorAssociation:string, body:string, createdAt:string, id:string, url:string, viewerDidAuthor:string};
   expect(comment.authorAssociation).toBe(commentFromSampleData['authorAssociation']);
   expect(comment.authorLogin).toBe(commentFromSampleData['author']['login']);
   expect(comment.body).toBe(commentFromSampleData['body'])
@@ -95,10 +96,11 @@ const CheckComments = (comments: IPullRequestComment[], index:number) => {
 }
 
 const CheckCommits = (commits: IPullRequestCommit[], index:number) => {
-  expect(commits.length).toBe(DataFromBigPullRequest['commits'].length);
+  const SampleData = DataFromBigPullRequest as {commits:unknown[]};
+  expect(commits.length).toBe(SampleData['commits'].length);
   
   const commit = commits[index];
-  const commitFromSampleData = DataFromBigPullRequest['commits'][index];
+  const commitFromSampleData = SampleData['commits'][index] as {oid:string, messageHeadline:string, messageBody:string, authors:{email:string, name:string, login:string, id:string}[]};
   const authorIndex = 0;
   expect(commit.commitId).toBe(commitFromSampleData['oid']);
   expect(commit.commitHeader).toBe(commitFromSampleData['messageHeadline']);
@@ -110,10 +112,11 @@ const CheckCommits = (commits: IPullRequestCommit[], index:number) => {
 }
 
 const CheckReviews = (reviews: IPullRequestReview[], index:number) => {
-  expect(reviews.length).toBe(DataFromBigPullRequest['reviews'].length);
+  const SampleData = DataFromBigPullRequest as {reviews:unknown[]};
+  expect(reviews.length).toBe(SampleData['reviews'].length);
   
   const review = reviews[index];
-  const reviewFromSampleData = DataFromBigPullRequest['reviews'][0];
+  const reviewFromSampleData  = SampleData['reviews'][0] as {author:{login:string}, body:string, state:string, submittedAt:string};
   expect(review.authorLogin).toBe(reviewFromSampleData['author']['login']);
   expect(review.body).toBe(reviewFromSampleData['body']);
   expect(review.state).toBe(reviewFromSampleData['state']);

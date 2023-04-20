@@ -15,12 +15,13 @@ export class FileChangeSummary implements IFileChangeSummary {
     public deletions = 0;
     public commits = 0;
     public changedFilesList: string[] = [];
-    public static CreateFromJson(json: any): IFileChangeSummary {
+    public static CreateFromJson(json: unknown): IFileChangeSummary {
+        const jsonObject = json as {additions: number; deletions: number; commits: object[]; changedFiles: string[]};
         const summary = new FileChangeSummary();
-        summary.additions = json['additions'];
-        summary.deletions = json['deletions'];
-        summary.commits = json['commits'].length;
-        summary.changedFilesList = json['changedFiles'];
+        summary.additions = jsonObject['additions'];
+        summary.deletions = jsonObject['deletions'];
+        summary.commits = jsonObject['commits'].length;
+        summary.changedFilesList = jsonObject['changedFiles'];
         return summary;
     }
 }
@@ -30,12 +31,13 @@ export class PullRequestReview implements IPullRequestReview {
     public state = "";
     public submittedAt = "";
     public body = "";
-    public static CreateFromJson(json: any): IPullRequestReview {
+    public static CreateFromJson(json: unknown): IPullRequestReview {
+        const jsonObject = json as {author: {login: string}; state: string; submittedAt: string; body: string}
         const review = new PullRequestReview();
-        review.authorLogin = json['author']['login'];
-        review.state = json['state'];
-        review.submittedAt = json['submittedAt'];
-        review.body = json['body'];
+        review.authorLogin = jsonObject['author']['login'];
+        review.state = jsonObject['state'];
+        review.submittedAt = jsonObject['submittedAt'];
+        review.body = jsonObject['body'];
         return review;
     }
 }
@@ -49,20 +51,21 @@ export class PullRequestComment implements IPullRequestComment {
     public url = "";
     public viewerDidAuthor = false;
 
-    public static CreateFromJson(json: any): IPullRequestComment {
+    public static CreateFromJson(json: unknown): IPullRequestComment {
+        const jsonObject = json as {author: {login: string}; createdAt: string; body: string; authorAssociation: string; id: string; url: string; viewerDidAuthor: boolean};
         const comment = new PullRequestComment();
-        comment.authorLogin = json['author']['login'];
-        comment.createdAt = json['createdAt'];
-        comment.body = json['body'];
-        comment.authorAssociation = json['authorAssociation'];
-        comment.id = json['id'];
-        comment.url = json['url'];
-        comment.viewerDidAuthor = json['viewerDidAuthor'];
+        comment.authorLogin = jsonObject['author']['login'];
+        comment.createdAt = jsonObject['createdAt'];
+        comment.body = jsonObject['body'];
+        comment.authorAssociation = jsonObject['authorAssociation'];
+        comment.id = jsonObject['id'];
+        comment.url = jsonObject['url'];
+        comment.viewerDidAuthor = jsonObject['viewerDidAuthor'];
         return comment;
     }
 }
 
-function ParseArrayOfType<T>(array: any[],cb:(wa: any) => T): T[] {
+function ParseArrayOfType<T>(array: unknown[],cb:(wa: unknown) => T): T[] {
     if (!array) {
         return new Array<T>();
     }
@@ -80,12 +83,13 @@ export class CommitAuthor implements ICommitAuthor
     public name = "";
     public login = "";
     public id = "";
-    public static CreateFromJson(json: any): ICommitAuthor {
+    public static CreateFromJson(json: unknown): ICommitAuthor {
+        const jsonObject = json as {email: string; name: string; login: string; id: string}
         const author = new CommitAuthor();
-        author.email = json['email'];
-        author.name = json['name'];
-        author.login = json['login'];
-        author.id = json['id'];
+        author.email = jsonObject['email'];
+        author.name = jsonObject['name'];
+        author.login = jsonObject['login'];
+        author.id = jsonObject['id'];
         return author
     }
 }
@@ -98,14 +102,16 @@ export class PullRequestCommit implements IPullRequestCommit{
     public commitHeader = "";
     public commitBody = "";
     public commitId = "";
-    public static CreateFromJson(json: any): IPullRequestCommit {
+    public static CreateFromJson(json: unknown): IPullRequestCommit {
+        const jsonObject = json as {authoredDate: string; authors: unknown[]; committedDate: string; messageHeadline: string; messageBody: string; oid: string}
         const commit = new PullRequestCommit();
-        commit.authorDate = json['authoredDate'];
-        commit.authors = ParseArrayOfType<ICommitAuthor>(json['authors'],CommitAuthor.CreateFromJson);
-        commit.commitDate = json['committedDate'];
-        commit.commitHeader = json['messageHeadline'];
-        commit.commitBody = json['messageBody'];
-        commit.commitId = json['oid'];
+        commit.authorDate = jsonObject['authoredDate'];
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        commit.authors = ParseArrayOfType<ICommitAuthor>(jsonObject['authors'],CommitAuthor.CreateFromJson);
+        commit.commitDate = jsonObject['committedDate'];
+        commit.commitHeader = jsonObject['messageHeadline'];
+        commit.commitBody = jsonObject['messageBody'];
+        commit.commitId = jsonObject['oid'];
 
         return commit
     }
@@ -120,14 +126,15 @@ export class StatusCheck implements IStatusCheck {
     public status = "";
     public name = "";
     public detailsUrl = "";    
-    public static CreateFromJson(json: any): IStatusCheck {
+    public static CreateFromJson(json: unknown): IStatusCheck {
+        const jsonObject = json as {workflowName: string; startedAt: string; completedAt: string; conclusion: string; status: string; name: string; detailsUrl: string}
         const statusCheck = new StatusCheck();
-        statusCheck.workflowName = json['workflowName'];
-        statusCheck.startedAt = json['startedAt'];
-        statusCheck.completedAt = json['completedAt'];
-        statusCheck.conclusion = json['conclusion'];
-        statusCheck.status = json['status'];
-        statusCheck.name = json['name'];
+        statusCheck.workflowName = jsonObject['workflowName'];
+        statusCheck.startedAt = jsonObject['startedAt'];
+        statusCheck.completedAt = jsonObject['completedAt'];
+        statusCheck.conclusion = jsonObject['conclusion'];
+        statusCheck.status = jsonObject['status'];
+        statusCheck.name = jsonObject['name'];
         return statusCheck;
     }
 }
@@ -156,31 +163,32 @@ export class PullRequest implements IPullRequest {
     public statusChecks: IStatusCheck[] = [];
     public fileChangeSummary: IFileChangeSummary = new FileChangeSummary();
 
-    public static CreateFromJson(cliPullRequest: any): IPullRequest {
+    public static CreateFromJson(cliPullRequest: unknown): IPullRequest {
+        const cliPullRequestObject = cliPullRequest as {number: number; title: string; createdAt: string; updatedAt: string; closedAt: string; mergedAt: string; body: string; author: string; state: string; mergeable: string; mergeStateStatus: string; isDraft: boolean; baseRefName: string; headRefName: string; headRefOid: string; headRepository: string; headRepositoryOwner: string; commits: unknown[]; reviews: unknown[]; comments: unknown[]; statusCheckRollup: unknown[]; fileChangeSummary: unknown}
         const pr = new PullRequest();
-        pr.id = cliPullRequest['number'];
-        pr.title = cliPullRequest['title'];
-        pr.createdAt = cliPullRequest['createdAt'];
-        pr.updatedAt = cliPullRequest['updatedAt'];
-        pr.closedAt = cliPullRequest['closedAt'];
-        pr.mergedAt = cliPullRequest['mergedAt'];
-        pr.body = cliPullRequest['body'];
-        pr.author = cliPullRequest['author'];
-        pr.state = cliPullRequest['state'];
-        pr.mergeable = cliPullRequest['mergeable'];
-        pr.mergeStateStatus = cliPullRequest['mergeStateStatus'];
-        pr.isDraft = cliPullRequest['isDraft'];
-        pr.baseRefName = cliPullRequest['baseRefName'];
-        pr.headRefName = cliPullRequest['headRefName'];
-        pr.headRefOid = cliPullRequest['headRefOid'];
-        pr.headRepository = cliPullRequest['headRepository'];
-        pr.headRepositoryOwner = cliPullRequest['headRepositoryOwner'];
+        pr.id = cliPullRequestObject['number'];
+        pr.title = cliPullRequestObject['title'];
+        pr.createdAt = cliPullRequestObject['createdAt'];
+        pr.updatedAt = cliPullRequestObject['updatedAt'];
+        pr.closedAt = cliPullRequestObject['closedAt'];
+        pr.mergedAt = cliPullRequestObject['mergedAt'];
+        pr.body = cliPullRequestObject['body'];
+        pr.author = cliPullRequestObject['author'];
+        pr.state = cliPullRequestObject['state'];
+        pr.mergeable = cliPullRequestObject['mergeable'];
+        pr.mergeStateStatus = cliPullRequestObject['mergeStateStatus'];
+        pr.isDraft = cliPullRequestObject['isDraft'];
+        pr.baseRefName = cliPullRequestObject['baseRefName'];
+        pr.headRefName = cliPullRequestObject['headRefName'];
+        pr.headRefOid = cliPullRequestObject['headRefOid'];
+        pr.headRepository = cliPullRequestObject['headRepository'];
+        pr.headRepositoryOwner = cliPullRequestObject['headRepositoryOwner'];
         
-        pr.commits = ParseArrayOfType<IPullRequestCommit>(cliPullRequest['commits'], (commit) => PullRequestCommit.CreateFromJson(commit));
-        pr.reviews = ParseArrayOfType<IPullRequestReview>(cliPullRequest['reviews'], (review) => PullRequestReview.CreateFromJson(review));
-        pr.comments = ParseArrayOfType<IPullRequestComment>(cliPullRequest['comments'], (comment) => PullRequestComment.CreateFromJson(comment));
-        pr.statusChecks = ParseArrayOfType<IStatusCheck>(cliPullRequest['statusCheckRollup'], (statusCheck) => StatusCheck.CreateFromJson(statusCheck));
-        pr.fileChangeSummary = FileChangeSummary.CreateFromJson(cliPullRequest);
+        pr.commits = ParseArrayOfType<IPullRequestCommit>(cliPullRequestObject['commits'], (commit) => PullRequestCommit.CreateFromJson(commit));
+        pr.reviews = ParseArrayOfType<IPullRequestReview>(cliPullRequestObject['reviews'], (review) => PullRequestReview.CreateFromJson(review));
+        pr.comments = ParseArrayOfType<IPullRequestComment>(cliPullRequestObject['comments'], (comment) => PullRequestComment.CreateFromJson(comment));
+        pr.statusChecks = ParseArrayOfType<IStatusCheck>(cliPullRequestObject['statusCheckRollup'], (statusCheck) => StatusCheck.CreateFromJson(statusCheck));
+        pr.fileChangeSummary = FileChangeSummary.CreateFromJson(cliPullRequestObject);
         return pr;
     }
 }
