@@ -32,17 +32,14 @@ test('Check event timeline generation', () => {
 test('Check calculation of "Time spend on branch before PR is created"', () => {
   const timeSpend = GetTimeSpendOnBranchBeforePRCreated(PullRequestStatModel)
   expect(timeSpend).toBeGreaterThan(0)
-  console.log(MillisecondsToReadableDuration(timeSpend))
 })
 
 test('Check calculation of "Time spend on branch before PR is merged"', () => {
   const timeSpend = GetTimeSpendOnBranchBeforePRMerged(PullRequestStatModel)
   expect(timeSpend).toBeGreaterThan(0)
-  console.log(MillisecondsToReadableDuration(timeSpend))
 })
 
 test('Check calculation of "Time to merge after the last review"', () => {
   const timeSpend = GetTimeToMergeAfterLastReview(PullRequestStatModel)
   expect(timeSpend).toBeGreaterThan(0)
-  console.log(MillisecondsToReadableDuration(timeSpend))
 })
