@@ -30,8 +30,8 @@ test('Check number of deleted lines', () => {
 })
 
 test('Check number changed files', () => {
-  const changedFiles = DataFromBigPullRequest as { changedFiles: unknown[] }
-  expect(GetChangedFilesCount(PullRequestStatModel)).toBe(changedFiles['changedFiles'].length)
+  const changedFiles = DataFromBigPullRequest as { changedFiles: number }
+  expect(GetChangedFilesCount(PullRequestStatModel)).toBe(changedFiles['changedFiles'])
 })
 
 test('Check number commits', () => {

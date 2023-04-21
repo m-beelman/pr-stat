@@ -14,9 +14,9 @@ export class FileChangeSummary implements IFileChangeSummary {
   public additions = 0
   public deletions = 0
   public commits = 0
-  public changedFilesList: string[] = []
+  public changedFilesList = 0
   public static CreateFromJson(json: unknown): IFileChangeSummary {
-    const jsonObject = json as { additions: number; deletions: number; commits: object[]; changedFiles: string[] }
+    const jsonObject = json as { additions: number; deletions: number; commits: object[]; changedFiles: number }
     const summary = new FileChangeSummary()
     summary.additions = jsonObject['additions']
     summary.deletions = jsonObject['deletions']

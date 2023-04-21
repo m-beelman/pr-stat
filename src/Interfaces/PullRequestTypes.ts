@@ -4,7 +4,7 @@ export interface IFileChangeSummary {
   additions: number
   deletions: number
   commits: number
-  changedFilesList: string[]
+  changedFilesList: number
 }
 
 export interface IPullRequestReview {

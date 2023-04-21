@@ -11,7 +11,7 @@ export const GetDeletedLines = (pr: IPullRequest): number => {
 }
 
 export const GetChangedFilesCount = (pr: IPullRequest): number => {
-  return pr.fileChangeSummary.changedFilesList.length
+  return pr.fileChangeSummary.changedFilesList
 }
 
 export const GetCommitsCount = (pr: IPullRequest): number => {

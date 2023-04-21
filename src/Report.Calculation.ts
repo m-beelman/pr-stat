@@ -152,15 +152,3 @@ export const GetTimeToMergeAfterLastReview = (pullRequest: IPullRequest) => {
 
   return -1
 }
-
-export const GetTimeSpendOnPrAfterCreation = (pullRequest: IPullRequest) => {
-  const eventTimeline = GenerateEventTimeline(pullRequest)
-  const createAtEvent = eventTimeline.find((event) => event.type === 'createAt')
-  const mergedAtEvent = eventTimeline.find((event) => event.type === 'mergedAt')
-
-  if (createAtEvent && mergedAtEvent && mergedAtEvent.date.getTime() > createAtEvent.date.getTime()) {
-    return mergedAtEvent.date.getTime() - createAtEvent.date.getTime()
-  }
-
-  return -1
-}

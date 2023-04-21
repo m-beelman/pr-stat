@@ -6,7 +6,6 @@ import {
   GetLeadTimeForPullRequest,
   GetTimeSpendOnBranchBeforePRCreated,
   GetTimeSpendOnBranchBeforePRMerged,
-  GetTimeSpendOnPrAfterCreation,
   GetTimeToMergeAfterLastReview,
   MillisecondsToReadableDuration,
 } from '../src/Report.Calculation'
@@ -44,12 +43,6 @@ test('Check calculation of "Time spend on branch before PR is merged"', () => {
 
 test('Check calculation of "Time to merge after the last review"', () => {
   const timeSpend = GetTimeToMergeAfterLastReview(PullRequestStatModel)
-  expect(timeSpend).toBeGreaterThan(0)
-  console.log(MillisecondsToReadableDuration(timeSpend))
-})
-
-test('Check calculation of "Time spend on PR after creation"', () => {
-  const timeSpend = GetTimeSpendOnPrAfterCreation(PullRequestStatModel)
   expect(timeSpend).toBeGreaterThan(0)
   console.log(MillisecondsToReadableDuration(timeSpend))
 })
