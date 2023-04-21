@@ -18,3 +18,10 @@ export interface IReport {
   Description: string
   Entries: IReportMeasurementEntry[]
 }
+
+export interface EventWithTime {
+  type: string
+  date: Date
+  time: number
+  event_instance: unknown
+}
