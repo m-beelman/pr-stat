@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Koninklijke Philips N.V.
 
 // use util to make exec a promise
-import util from 'util'
+import * as util from 'util'
 import { exec } from 'child_process'
 
 const execAsync = util.promisify(exec)

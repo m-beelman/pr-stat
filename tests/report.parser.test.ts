@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Koninklijke Philips N.V.
 
 import { GetPullRequestData } from '../src/GitHubCliHelper'
-import fs from 'fs'
+import * as fs from 'fs'
 import { DataFromBigPullRequest } from './pr_sample_data'
 import { PullRequest } from '../src/PullRequest.Definitions'
 import {
