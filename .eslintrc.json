@@ -13,5 +13,6 @@
   "root": true,
   "rules": {
     "@typescript-eslint/no-unsafe-assignment": "warn"
-  }
+  },
+  "ignorePatterns": ["node_modules", "dist", "coverage"]
 }
