@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Koninklijke Philips N.V.
+// for license and copyright look at the repository
 
 import { IPullRequest } from './Interfaces/PullRequestTypes'
 import { EventWithTime } from './Interfaces/ReportTypes'
