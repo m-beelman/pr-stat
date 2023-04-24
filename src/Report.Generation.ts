@@ -2,9 +2,12 @@
 
 import { IPullRequest } from './Interfaces/PullRequestTypes'
 import { IReport } from './Interfaces/ReportTypes'
-import { tsMarkdown, table, TableEntry, H1Entry } from 'ts-markdown'
+import { tsMarkdown, table, TableEntry, H1Entry, H3Entry } from 'ts-markdown'
+import { MeasureCategory, MeasureCategoryTitleMap } from './Report.Definitions'
 
 export class ReportGenerator {
+  DescriptionHeaderLabel = 'Description'
+  ValueHeaderLabel = 'Value'
   public static GenerateReport(pr: IPullRequest, report: IReport): IReport {
     report.Entries.forEach((entry) => {
       entry.Info.Value = entry.ReportMeasureCallback(pr)
@@ -24,18 +27,40 @@ export class ReportGenerator {
     return title
   }
 
+  public GenerateCategoryTitle(measureCategory: MeasureCategory): H3Entry {
+    const title = { h3: `${MeasureCategoryTitleMap.get(measureCategory) || "No category"}` }
+    return title
+  }
+
   public GenerateMeasureTable(pr: IPullRequest, report: IReport): TableEntry {
     report.Entries.forEach((entry) => {
       entry.Info.Value = entry.ReportMeasureCallback(pr)
     })
 
     const rows = report.Entries.map((entry) => ({
-      Label: entry.Info.Label,
+      Description: entry.Info.Description,
       Value: entry.Info.Value,
     }))
 
     return table({
-      columns: [{ name: 'Label' }, { name: 'Value' }],
+      columns: [{ name: this.DescriptionHeaderLabel }, { name: this.ValueHeaderLabel }],
+      rows: rows,
+    })
+  }
+
+  public GenerateCategoryTable(pr: IPullRequest, report: IReport, measureCategory: MeasureCategory): TableEntry {
+    const categoryEntries = report.Entries.filter((entry) => entry.Info.MeasureCategory === measureCategory)
+    categoryEntries.forEach((entry) => {
+      entry.Info.Value = entry.ReportMeasureCallback(pr)
+    })
+
+    const rows = categoryEntries.map((entry) => ({
+      Description: entry.Info.Description,
+      Value: entry.Info.Value,
+    }))
+
+    return table({
+      columns: [{ name: this.DescriptionHeaderLabel }, { name: this.ValueHeaderLabel }],
       rows: rows,
     })
   }

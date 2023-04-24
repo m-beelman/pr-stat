@@ -1,6 +1,5 @@
 // Copyright (c) 2023 Koninklijke Philips N.V.
 
-import { measureMemory } from 'vm'
 import { IPullRequest } from './Interfaces/PullRequestTypes'
 import { IReport, IReportMeasurementEntry, IReportMeasurementInfo, MeasureCallback } from './Interfaces/ReportTypes'
 
@@ -11,25 +10,35 @@ export enum MeasureCategory {
   StatusCheckRelated,
 }
 
+export const MeasureCategoryTitleMap = new Map<MeasureCategory, string>([
+  [MeasureCategory.None, 'None'],
+  [MeasureCategory.StaticMeasures, 'Static measures'],
+  [MeasureCategory.TimeRelatedMeasures, 'Time related measures'],
+  [MeasureCategory.StatusCheckRelated, 'Status check related measures'],
+])
+
 export class MeasurementInfo implements IReportMeasurementInfo {
-  public Label
+  public Description
   public PresentationValue
   public Value
   public ConfigurationName
   public DefaultConfigValue
+  public MeasureCategory
 
   constructor(
     label: string,
     presentationValue: string | number,
     value: string | number,
     configName: string,
-    defaultConfigValue: string | number
+    defaultConfigValue: string | number,
+    measureCategory: MeasureCategory
   ) {
-    this.Label = label
+    this.Description = label
     this.PresentationValue = presentationValue
     this.Value = value
     this.ConfigurationName = configName
     this.DefaultConfigValue = defaultConfigValue
+    this.MeasureCategory = measureCategory
   }
 }
 

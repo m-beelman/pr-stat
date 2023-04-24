@@ -1,14 +1,16 @@
 // Copyright (c) 2023 Koninklijke Philips N.V.
 
+import { MeasureCategory } from '../Report.Definitions'
 import { IPullRequest } from './PullRequestTypes'
 
 export type MeasureCallback = (pr: IPullRequest) => string | number
 
 export interface IReportMeasurementInfo {
-  Label: string
+  Description: string
   PresentationValue: string | number
   Value: string | number
   ConfigurationName: string
+  MeasureCategory: MeasureCategory
   DefaultConfigValue: string | number
 }
 
