@@ -7,8 +7,8 @@ import { tsMarkdown, table, TableEntry, H1Entry } from 'ts-markdown'
 export class ReportGenerator {
   public static GenerateReport(pr: IPullRequest, report: IReport): IReport {
     report.Entries.forEach((entry) => {
-      entry.Value = entry.ReportMeasureCallback(pr)
-      entry.PresentationValue = entry.Value
+      entry.Info.Value = entry.ReportMeasureCallback(pr)
+      entry.Info.PresentationValue = entry.Info.Value
     })
     return report
   }
@@ -26,12 +26,12 @@ export class ReportGenerator {
 
   public GenerateMeasureTable(pr: IPullRequest, report: IReport): TableEntry {
     report.Entries.forEach((entry) => {
-      entry.Value = entry.ReportMeasureCallback(pr)
+      entry.Info.Value = entry.ReportMeasureCallback(pr)
     })
 
     const rows = report.Entries.map((entry) => ({
-      Label: entry.Label,
-      Value: entry.Value,
+      Label: entry.Info.Label,
+      Value: entry.Info.Value,
     }))
 
     return table({

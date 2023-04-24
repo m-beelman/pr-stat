@@ -7,7 +7,7 @@ import {
   GetTimeSpendOnBranchBeforePRMerged,
   GetTimeToMergeAfterLastReview,
 } from './Report.Calculation'
-import { ReportMeasurementEntry } from './Report.Definitions'
+import { MeasureCategory, MeasurementInfo, ReportMeasurementEntry } from './Report.Definitions'
 import {
   GetAddedLines,
   GetDeletedLines,
@@ -17,49 +17,106 @@ import {
   GetCommentCount,
 } from './Report.Functions'
 
-export const ReportMetrics = new Array<ReportMeasurementEntry>()
-ReportMetrics.push(new ReportMeasurementEntry('additions', 'Additions', 0, 0, 'ShowAdditions', GetAddedLines))
-ReportMetrics.push(new ReportMeasurementEntry('deleted', 'Deleted', 0, 0, 'ShowDeleted', GetDeletedLines))
-ReportMetrics.push(
-  new ReportMeasurementEntry('changedFiles', 'Changed Files', 0, 0, 'ShowNumberOfChangedFiles', GetChangedFilesCount)
-)
-ReportMetrics.push(new ReportMeasurementEntry('commits', 'Commits', 0, 0, 'ShowNumberOfCommits', GetCommitsCount))
-ReportMetrics.push(new ReportMeasurementEntry('reviews', 'Reviews', 0, 0, 'ShowNumberOfReviews', GetReviewCount))
-ReportMetrics.push(new ReportMeasurementEntry('comments', 'Comments', 0, 0, 'ShowNumberOfComments', GetCommentCount))
-
-export const ReportMeasures = new Array<ReportMeasurementEntry>()
-ReportMeasures.push(
-  new ReportMeasurementEntry('pr_lead_time', 'PR lead time', 0, 0, 'ShowPRLeadTime', (pr) =>
-    MillisecondsToReadableDuration(GetLeadTimeForPullRequest(pr))
+export const MetricTable = new Array<ReportMeasurementEntry>()
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'additions',
+    new MeasurementInfo('Additions',
+    0,
+    0,
+    'ShowAdditions',
+    MeasureCategory.StaticMeasures),
+    GetAddedLines
   )
 )
-ReportMeasures.push(
+MetricTable.push(
+  new ReportMeasurementEntry('deleted', new MeasurementInfo('Deleted', 0, 0, 'ShowDeleted', MeasureCategory.StaticMeasures), GetDeletedLines)
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'changedFiles',
+    new MeasurementInfo('Changed Files',
+    0,
+    0,
+    'ShowNumberOfChangedFiles',
+    MeasureCategory.StaticMeasures),
+    GetChangedFilesCount
+  )
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'commits',
+    new MeasurementInfo('Commits',
+    0,
+    0,
+    'ShowNumberOfCommits',
+    MeasureCategory.StaticMeasures),
+    GetCommitsCount
+  )
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'reviews',
+    new MeasurementInfo('Reviews',
+    0,
+    0,
+    'ShowNumberOfReviews',
+    MeasureCategory.StaticMeasures),
+    GetReviewCount
+  )
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'comments',
+    new MeasurementInfo('Comments',
+    0,
+    0,
+    'ShowNumberOfComments',
+    MeasureCategory.StaticMeasures),
+    GetCommentCount
+  )
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'pr_lead_time',
+    new MeasurementInfo('PR lead time',
+    0,
+    0,
+    'ShowPRLeadTime',
+    MeasureCategory.TimeRelatedMeasures),
+    (pr) => MillisecondsToReadableDuration(GetLeadTimeForPullRequest(pr))
+  )
+)
+MetricTable.push(
   new ReportMeasurementEntry(
     'pr_time_branch_before_pr',
-    'Time that was spend on the branch before the PR was created',
+    new MeasurementInfo('Time that was spend on the branch before the PR was created',
     0,
     0,
     'ShowTimeSpendOnBranchBeforePrCreated',
+    MeasureCategory.TimeRelatedMeasures),
     (pr) => MillisecondsToReadableDuration(GetTimeSpendOnBranchBeforePRCreated(pr))
   )
 )
-ReportMeasures.push(
+MetricTable.push(
   new ReportMeasurementEntry(
     'pr_time_branch_before_merge',
-    'Time that was spend on the branch before the PR was merged',
+    new MeasurementInfo('Time that was spend on the branch before the PR was merged',
     0,
     0,
     'ShowTimeSpendOnBranchBeforePrMerged',
+    MeasureCategory.TimeRelatedMeasures),
     (pr) => MillisecondsToReadableDuration(GetTimeSpendOnBranchBeforePRMerged(pr))
   )
 )
-ReportMeasures.push(
+MetricTable.push(
   new ReportMeasurementEntry(
     'pr_time_to_merge_after_last_review',
-    'Time to merge after last review',
+    new MeasurementInfo('Time to merge after last review',
     0,
     0,
     'ShowTimeToMergeAfterLastReview',
+    MeasureCategory.TimeRelatedMeasures),
     (pr) => MillisecondsToReadableDuration(GetTimeToMergeAfterLastReview(pr))
   )
 )

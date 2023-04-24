@@ -3,7 +3,7 @@ import * as github from '@actions/github'
 import { AddCommentToPR, GetPullRequestData } from './GitHubCliHelper'
 import { ReportGenerator } from './Report.Generation'
 import { Report } from './Report.Definitions'
-import { ReportMeasures, ReportMetrics } from './Report.Measures'
+import { MetricTable } from './Report.Measures'
 import { PullRequest } from './PullRequest.Definitions'
 import * as fs from 'fs'
 
@@ -25,11 +25,11 @@ export const run = async (inputs: Inputs): Promise<number> => {
   const pullRequestDateModel = PullRequest.CreateFromJson(cliPullRequestData)
   const generator = new ReportGenerator()
   const report = new Report()
-  report.Entries = ReportMetrics.concat(ReportMeasures)
+  report.Entries = MetricTable.concat(MetricTable)
   report.Description = 'Test report'
   report.Id = pullRequestDateModel.id.toString()
   const reportAsString = generator.Generate(pullRequestDateModel, report)
-  // genrate random file name
+  // generate random file name
   const fileName = Math.random().toString(36).substring(7) + '.md'
   // write report string to file
   fs.writeFileSync(fileName, `<!-- ${JSON.stringify(cliPullRequestData)} -->\n${reportAsString}`)

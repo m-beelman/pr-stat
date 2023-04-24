@@ -4,12 +4,17 @@ import { IPullRequest } from './PullRequestTypes'
 
 export type MeasureCallback = (pr: IPullRequest) => string | number
 
-export interface IReportMeasurementEntry {
-  Id: string
+export interface IReportMeasurementInfo {
   Label: string
   PresentationValue: string | number
   Value: string | number
   ConfigurationName: string
+  DefaultConfigValue: string | number
+}
+
+export interface IReportMeasurementEntry {
+  Id: string
+  Info: IReportMeasurementInfo
   ReportMeasureCallback: MeasureCallback
 }
 
