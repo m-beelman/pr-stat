@@ -3,6 +3,7 @@
 import { IPullRequest } from './Interfaces/PullRequestTypes'
 import { IReport, IReportMeasurementEntry, MeasureCallback } from './Interfaces/ReportTypes'
 
+
 export class ReportMeasurementEntry implements IReportMeasurementEntry {
   public Id = ''
   public Label = ''
