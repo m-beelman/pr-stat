@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Koninklijke Philips N.V.
+// for license and copyright look at the repository
 
 import { IPullRequest } from '../src/Interfaces/PullRequestTypes'
 import { PullRequest } from '../src/PullRequest.Definitions'

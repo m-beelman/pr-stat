@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Koninklijke Philips N.V.
+// for license and copyright look at the repository
 
 // use util to make exec a promise
 import * as util from 'util'

@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Koninklijke Philips N.V.
+// for license and copyright look at the repository
 
 import { MeasureCategory } from '../Report.Definitions'
 import { IPullRequest } from './PullRequestTypes'
