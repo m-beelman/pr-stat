@@ -14,11 +14,6 @@ export const run = async (inputs: Inputs): Promise<number> => {
     core.setFailed('Action is running outside of PR context')
     return 0
   }
-  // ensure that the action only runs if PR is closed
-  if (process.env.GITHUB_EVENT_ACTION !== 'closed') {
-    core.setFailed('Action is running outside of PR closed context')
-    return 0
-  }
 
   // get PR number
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
