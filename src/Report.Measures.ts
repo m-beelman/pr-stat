@@ -21,7 +21,7 @@ export const MetricTable = new Array<ReportMeasurementEntry>()
 MetricTable.push(
   new ReportMeasurementEntry(
     'additions',
-    new MeasurementInfo('Additions',
+    new MeasurementInfo('Number of added lines',
     0,
     0,
     'ShowAdditions',
@@ -30,12 +30,12 @@ MetricTable.push(
   )
 )
 MetricTable.push(
-  new ReportMeasurementEntry('deleted', new MeasurementInfo('Deleted', 0, 0, 'ShowDeleted', MeasureCategory.StaticMeasures), GetDeletedLines)
+  new ReportMeasurementEntry('deleted', new MeasurementInfo('Number of deleted lines', 0, 0, 'ShowDeleted', MeasureCategory.StaticMeasures), GetDeletedLines)
 )
 MetricTable.push(
   new ReportMeasurementEntry(
     'changedFiles',
-    new MeasurementInfo('Changed Files',
+    new MeasurementInfo('Number of changed files',
     0,
     0,
     'ShowNumberOfChangedFiles',
@@ -46,7 +46,7 @@ MetricTable.push(
 MetricTable.push(
   new ReportMeasurementEntry(
     'commits',
-    new MeasurementInfo('Commits',
+    new MeasurementInfo('Number of commits',
     0,
     0,
     'ShowNumberOfCommits',
@@ -57,7 +57,7 @@ MetricTable.push(
 MetricTable.push(
   new ReportMeasurementEntry(
     'reviews',
-    new MeasurementInfo('Reviews',
+    new MeasurementInfo('Number of reviews',
     0,
     0,
     'ShowNumberOfReviews',
@@ -68,7 +68,7 @@ MetricTable.push(
 MetricTable.push(
   new ReportMeasurementEntry(
     'comments',
-    new MeasurementInfo('Comments',
+    new MeasurementInfo('Number of comments (w/o review comments)',
     0,
     0,
     'ShowNumberOfComments',
@@ -79,7 +79,7 @@ MetricTable.push(
 MetricTable.push(
   new ReportMeasurementEntry(
     'pr_lead_time',
-    new MeasurementInfo('PR lead time',
+    new MeasurementInfo('PR lead time (from creation to close of PR)',
     0,
     0,
     'ShowPRLeadTime',
