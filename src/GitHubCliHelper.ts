@@ -33,3 +33,11 @@ export const GetPullRequestData = async (pullRequestNumber: number, repo = ''): 
   pullRequestData = stdout
   return JSON.parse(pullRequestData) as unknown
 }
+
+export const AddCommentToPR = async (commentFile: string, prNumber: number): Promise<void> => {
+  const ghCliCommand = `gh pr comment ${prNumber} --body-file ${commentFile}`
+  const { stdout, stderr } = await execAsync(ghCliCommand)
+  if (stdout === ``) {
+    throw new Error(`No data returned from GitHub CLI. Command: ${ghCliCommand} \n Stderr: ${stderr}`)
+  }
+}
