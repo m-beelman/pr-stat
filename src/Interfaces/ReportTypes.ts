@@ -11,7 +11,7 @@ export interface IReportMeasurementInfo {
   Value: string | number
   ConfigurationName: string
   MeasureCategory: MeasureCategory
-  DefaultConfigValue: string | number
+  ConfigValue: string | number
 }
 
 export interface IReportMeasurementEntry {

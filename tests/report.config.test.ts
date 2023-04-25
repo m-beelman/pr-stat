@@ -14,7 +14,7 @@ beforeAll(() => {
       description: item.Info.Description,
       name: item.Info.ConfigurationName,
       category: MeasureCategory[item.Info.MeasureCategory],
-      defaultValue: item.Info.DefaultConfigValue,
+      defaultValue: item.Info.ConfigValue,
     }
   })
 

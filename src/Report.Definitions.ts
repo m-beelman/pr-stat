@@ -22,7 +22,7 @@ export class MeasurementInfo implements IReportMeasurementInfo {
   public PresentationValue
   public Value
   public ConfigurationName
-  public DefaultConfigValue
+  public ConfigValue
   public MeasureCategory
 
   constructor(
@@ -37,7 +37,7 @@ export class MeasurementInfo implements IReportMeasurementInfo {
     this.PresentationValue = presentationValue
     this.Value = value
     this.ConfigurationName = configName
-    this.DefaultConfigValue = defaultConfigValue
+    this.ConfigValue = defaultConfigValue
     this.MeasureCategory = measureCategory
   }
 }
