@@ -76,3 +76,26 @@ test('Generate valid input keys and patch the action.yaml file', () => {
   fs.writeFileSync('action.yaml', yaml.dump(actions))
   expect(1).toBe(1)
 })
+
+test('Generate configuration arguments for action code', () => {
+  const inputValues: { [index: string]: { description: string; default: string | number; required: boolean } } = {}
+  rows.map((row) => {
+    inputValues[row.Name] = { description: row.Description, default: row.DefaultValue, required: false }
+  })
+  // open file
+  fs.writeFileSync('src/action.config.args.ts', '//GENERATED FILE FROM report.config.tests.ts - DO NOT EDIT!!!\n\n')
+  fs.writeFileSync('src/action.config.type.ts', '//GENERATED FILE FROM report.config.tests.ts - DO NOT EDIT!!!\n\n')
+  fs.appendFileSync('src/action.config.args.ts', "import * as core from '@actions/core'\n\n")
+  fs.appendFileSync('src/action.config.type.ts', 'type ConfigurationInputs = {\n')
+  fs.appendFileSync('src/action.config.args.ts', 'export const config = {\n')
+  for (const key in inputValues) {
+    fs.appendFileSync(
+      'src/action.config.args.ts',
+      `  ${key}: core.getInput('${key}', { required: ${inputValues[key].required.toString()} }),\n`
+    )
+    fs.appendFileSync('src/action.config.type.ts', `  ${key}: string | number,\n`)
+  }
+  fs.appendFileSync('src/action.config.args.ts', '}')
+  fs.appendFileSync('src/action.config.type.ts', '}\n')
+  expect(1).toBe(1)
+})

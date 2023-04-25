@@ -7,21 +7,8 @@ import { MetricTable } from './Report.Measures'
 import { PullRequest } from './PullRequest.Definitions'
 import * as fs from 'fs'
 
-type Inputs = {
-  ShowAdditions: string | number
-  ShowDeleted: string | number
-  ShowNumberOfChangedFiles: string | number
-  ShowNumberOfCommits: string | number
-  ShowNumberOfReviews: string | number
-  ShowNumberOfComments: string | number
-  ShowPRLeadTime: string | number
-  ShowTimeSpendOnBranchBeforePrCreated: string | number
-  ShowTimeSpendOnBranchBeforePrMerged: string | number
-  ShowTimeToMergeAfterLastReview: string | number
-}
-
 // eslint-disable-next-line @typescript-eslint/require-await
-export const run = async (inputs: Inputs): Promise<number> => {
+export const run = async (inputs: ConfigurationInputs): Promise<number> => {
   // take care that action is running only in PR context
   if (process.env.GITHUB_EVENT_NAME !== 'pull_request') {
     core.setFailed('Action is running outside of PR context')
