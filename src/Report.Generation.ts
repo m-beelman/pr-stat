@@ -2,7 +2,7 @@
 
 import { IPullRequest } from './Interfaces/PullRequestTypes'
 import { IReport } from './Interfaces/ReportTypes'
-import { tsMarkdown, table, TableEntry, H1Entry, H3Entry } from 'ts-markdown'
+import { tsMarkdown, table, TableEntry, H1Entry, H3Entry, MarkdownEntry } from 'ts-markdown'
 import { MeasureCategory, MeasureCategoryTitleMap } from './Report.Definitions'
 
 export class ReportGenerator {
@@ -19,7 +19,8 @@ export class ReportGenerator {
   public Generate(pr: IPullRequest, report: IReport): string {
     const header = this.GenerateHeader(pr)
     const table = this.GenerateMeasureTable(pr, report)
-    return tsMarkdown([header, table])
+    const reportElements = [header, ...table]
+    return tsMarkdown(reportElements)
   }
 
   public GenerateHeader(pr: IPullRequest): H1Entry {
@@ -32,20 +33,19 @@ export class ReportGenerator {
     return title
   }
 
-  public GenerateMeasureTable(pr: IPullRequest, report: IReport): TableEntry {
+  public GenerateMeasureTable(pr: IPullRequest, report: IReport): MarkdownEntry[] {
     report.Entries.forEach((entry) => {
       entry.Info.Value = entry.ReportMeasureCallback(pr)
     })
 
-    const rows = report.Entries.map((entry) => ({
-      Description: entry.Info.Description,
-      Value: entry.Info.Value,
-    }))
-
-    return table({
-      columns: [{ name: this.DescriptionHeaderLabel }, { name: this.ValueHeaderLabel }],
-      rows: rows,
+    const tables: MarkdownEntry[] = []
+    const categories = new Set(report.Entries.map((entry) => entry.Info.MeasureCategory))
+    categories.forEach((category) => {
+      tables.push(this.GenerateCategoryTitle(category))
+      tables.push(this.GenerateCategoryTable(pr, report, category))
     })
+
+    return tables
   }
 
   public GenerateCategoryTable(pr: IPullRequest, report: IReport, measureCategory: MeasureCategory): TableEntry {

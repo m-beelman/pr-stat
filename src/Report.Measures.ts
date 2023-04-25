@@ -21,14 +21,14 @@ export const MetricTable = new Array<ReportMeasurementEntry>()
 MetricTable.push(
   new ReportMeasurementEntry(
     'additions',
-    new MeasurementInfo('Number of added lines', 0, 0, 'ShowAdditions', '', MeasureCategory.StaticMeasures),
+    new MeasurementInfo('Number of added lines', 0, 0, 'ShowAdditions', 'yes', MeasureCategory.StaticMeasures),
     GetAddedLines
   )
 )
 MetricTable.push(
   new ReportMeasurementEntry(
     'deleted',
-    new MeasurementInfo('Number of deleted lines', 0, 0, 'ShowDeleted', '', MeasureCategory.StaticMeasures),
+    new MeasurementInfo('Number of deleted lines', 0, 0, 'ShowDeleted', 'yes', MeasureCategory.StaticMeasures),
     GetDeletedLines
   )
 )
@@ -40,7 +40,7 @@ MetricTable.push(
       0,
       0,
       'ShowNumberOfChangedFiles',
-      '',
+      'yes',
       MeasureCategory.StaticMeasures
     ),
     GetChangedFilesCount
@@ -49,14 +49,14 @@ MetricTable.push(
 MetricTable.push(
   new ReportMeasurementEntry(
     'commits',
-    new MeasurementInfo('Number of commits', 0, 0, 'ShowNumberOfCommits', '', MeasureCategory.StaticMeasures),
+    new MeasurementInfo('Number of commits', 0, 0, 'ShowNumberOfCommits', 'yes', MeasureCategory.StaticMeasures),
     GetCommitsCount
   )
 )
 MetricTable.push(
   new ReportMeasurementEntry(
     'reviews',
-    new MeasurementInfo('Number of reviews', 0, 0, 'ShowNumberOfReviews', '', MeasureCategory.StaticMeasures),
+    new MeasurementInfo('Number of reviews', 0, 0, 'ShowNumberOfReviews', 'yes', MeasureCategory.StaticMeasures),
     GetReviewCount
   )
 )
@@ -68,7 +68,7 @@ MetricTable.push(
       0,
       0,
       'ShowNumberOfComments',
-      '',
+      'yes',
       MeasureCategory.StaticMeasures
     ),
     GetCommentCount
@@ -82,7 +82,7 @@ MetricTable.push(
       0,
       0,
       'ShowPRLeadTime',
-      '',
+      'yes',
       MeasureCategory.TimeRelatedMeasures
     ),
     (pr) => MillisecondsToReadableDuration(GetLeadTimeForPullRequest(pr))
@@ -96,7 +96,7 @@ MetricTable.push(
       0,
       0,
       'ShowTimeSpendOnBranchBeforePrCreated',
-      '',
+      'yes',
       MeasureCategory.TimeRelatedMeasures
     ),
     (pr) => MillisecondsToReadableDuration(GetTimeSpendOnBranchBeforePRCreated(pr))
@@ -110,7 +110,7 @@ MetricTable.push(
       0,
       0,
       'ShowTimeSpendOnBranchBeforePrMerged',
-      '',
+      'yes',
       MeasureCategory.TimeRelatedMeasures
     ),
     (pr) => MillisecondsToReadableDuration(GetTimeSpendOnBranchBeforePRMerged(pr))
@@ -124,7 +124,7 @@ MetricTable.push(
       0,
       0,
       'ShowTimeToMergeAfterLastReview',
-      '',
+      'yes',
       MeasureCategory.TimeRelatedMeasures
     ),
     (pr) => MillisecondsToReadableDuration(GetTimeToMergeAfterLastReview(pr))
