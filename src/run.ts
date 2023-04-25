@@ -3,17 +3,20 @@ import * as github from '@actions/github'
 import { AddCommentToPR, GetPullRequestData } from './GitHubCliHelper'
 import { ReportGenerator } from './Report.Generation'
 import { Report } from './Report.Definitions'
-import { MetricTable } from './Report.Measures'
+import { GetActiveMeasures, MetricTable, UpdateConfigValues } from './Report.Measures'
 import { PullRequest } from './PullRequest.Definitions'
 import * as fs from 'fs'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const run = async (inputs: ConfigurationInputs): Promise<number> => {
+export const run = async (inputsFromWorkflow: ConfigurationInputs): Promise<number> => {
   // take care that action is running only in PR context
   if (process.env.GITHUB_EVENT_NAME !== 'pull_request') {
     core.setFailed('Action is running outside of PR context')
     return 0
   }
+
+  UpdateConfigValues(inputsFromWorkflow, MetricTable)
+  const activeConfigValues = GetActiveMeasures(MetricTable)
 
   // get PR number
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
@@ -21,7 +24,7 @@ export const run = async (inputs: ConfigurationInputs): Promise<number> => {
   const pullRequestDataModel = PullRequest.CreateFromJson(cliPullRequestData)
   const generator = new ReportGenerator()
   const report = new Report()
-  report.Entries = MetricTable
+  report.Entries = activeConfigValues
   report.Description = 'Test report'
   report.Id = pullRequestDataModel.id.toString()
   const reportAsString = generator.Generate(pullRequestDataModel, report)

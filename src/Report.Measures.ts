@@ -17,6 +17,22 @@ import {
   GetCommentCount,
 } from './Report.Functions'
 
+export const UpdateConfigValues = (
+  configValues: ConfigurationInputs,
+  measurementEntries: Array<ReportMeasurementEntry>
+): Array<ReportMeasurementEntry> => {
+  // Update measurementEntries with config values from inputs
+  measurementEntries.forEach((entry) => {
+    // get the property value of inputs
+    entry.Info.ConfigValue = (configValues as { [key: string]: string | number })[entry.Info.ConfigurationName]
+  })
+  return measurementEntries
+}
+
+export const GetActiveMeasures = (entries: Array<ReportMeasurementEntry>): Array<ReportMeasurementEntry> => {
+  return entries.filter((entry) => entry.Info.ConfigValue === 'yes')
+}
+
 export const MetricTable = new Array<ReportMeasurementEntry>()
 MetricTable.push(
   new ReportMeasurementEntry(

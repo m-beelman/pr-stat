@@ -1,9 +1,9 @@
 // for license and copyright look at the repository
 
 import { table, tsMarkdown } from 'ts-markdown'
-import { MetricTable } from '../src/Report.Measures'
+import { GetActiveMeasures, MetricTable, UpdateConfigValues } from '../src/Report.Measures'
 import * as fs from 'fs'
-import { MeasureCategory } from '../src/Report.Definitions'
+import { MeasureCategory, ReportMeasurementEntry } from '../src/Report.Definitions'
 import yaml from 'js-yaml'
 
 let rows: { Name: string; Description: string; DefaultValue: string | number; Category: string }[] = []
@@ -77,6 +77,50 @@ test('Generate valid input keys and patch the action.yaml file', () => {
   expect(1).toBe(1)
 })
 
+const CreateMetricTableCopy = (table: ReportMeasurementEntry[]): ReportMeasurementEntry[] => {
+  const tableAsJson = JSON.stringify(table)
+  return JSON.parse(tableAsJson) as ReportMeasurementEntry[]
+}
+
+test('Update the MetricTable with config values from workflow', () => {
+  const inputValuesFromWorkflow = {} as ConfigurationInputs
+  inputValuesFromWorkflow.ShowAdditions = 'yes'
+  inputValuesFromWorkflow.ShowDeleted = 'yes'
+  inputValuesFromWorkflow.ShowNumberOfChangedFiles = 'yes'
+  inputValuesFromWorkflow.ShowNumberOfCommits = 'no'
+  inputValuesFromWorkflow.ShowNumberOfReviews = 'no'
+  inputValuesFromWorkflow.ShowNumberOfComments = 'no'
+  inputValuesFromWorkflow.ShowPRLeadTime = 'yes'
+  inputValuesFromWorkflow.ShowTimeSpendOnBranchBeforePrCreated = 'no'
+  inputValuesFromWorkflow.ShowTimeSpendOnBranchBeforePrMerged = 'no'
+  inputValuesFromWorkflow.ShowTimeToMergeAfterLastReview = 'yes'
+  // create copy of MetricTable
+  const myMetricTable: ReportMeasurementEntry[] = CreateMetricTableCopy(MetricTable)
+  UpdateConfigValues(inputValuesFromWorkflow, myMetricTable)
+  console.log(MetricTable)
+  expect(1).toBe(1)
+})
+
+test('Filter the MetricTable with config values from workflow', () => {
+  const inputValuesFromWorkflow = {} as ConfigurationInputs
+  inputValuesFromWorkflow.ShowAdditions = 'yes'
+  inputValuesFromWorkflow.ShowDeleted = 'yes'
+  inputValuesFromWorkflow.ShowNumberOfChangedFiles = 'yes'
+  inputValuesFromWorkflow.ShowNumberOfCommits = 'no'
+  inputValuesFromWorkflow.ShowNumberOfReviews = 'no'
+  inputValuesFromWorkflow.ShowNumberOfComments = 'no'
+  inputValuesFromWorkflow.ShowPRLeadTime = 'yes'
+  inputValuesFromWorkflow.ShowTimeSpendOnBranchBeforePrCreated = 'no'
+  inputValuesFromWorkflow.ShowTimeSpendOnBranchBeforePrMerged = 'no'
+  inputValuesFromWorkflow.ShowTimeToMergeAfterLastReview = 'yes'
+  // create copy of MetricTable
+  const myMetricTable: ReportMeasurementEntry[] = CreateMetricTableCopy(MetricTable)
+  UpdateConfigValues(inputValuesFromWorkflow, myMetricTable)
+  const activeMeasures = GetActiveMeasures(myMetricTable)
+  console.log(activeMeasures)
+  expect(1).toBe(1)
+})
+
 test('Generate configuration arguments for action code', () => {
   const inputValues: { [index: string]: { description: string; default: string | number; required: boolean } } = {}
   rows.map((row) => {
@@ -93,7 +137,7 @@ test('Generate configuration arguments for action code', () => {
       'src/action.config.args.ts',
       `  ${key}: core.getInput('${key}', { required: ${inputValues[key].required.toString()} }),\n`
     )
-    fs.appendFileSync('src/action.config.type.ts', `  ${key}: string | number,\n`)
+    fs.appendFileSync('src/action.config.type.ts', `  '${key}': string | number,\n`)
   }
   fs.appendFileSync('src/action.config.args.ts', '}')
   fs.appendFileSync('src/action.config.type.ts', '}\n')
