@@ -25,7 +25,7 @@ export const run = async (inputs: Inputs): Promise<number> => {
   const pullRequestDateModel = PullRequest.CreateFromJson(cliPullRequestData)
   const generator = new ReportGenerator()
   const report = new Report()
-  report.Entries = MetricTable.concat(MetricTable)
+  report.Entries = MetricTable
   report.Description = 'Test report'
   report.Id = pullRequestDateModel.id.toString()
   const reportAsString = generator.Generate(pullRequestDateModel, report)

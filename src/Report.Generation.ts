@@ -8,13 +8,6 @@ import { MeasureCategory, MeasureCategoryTitleMap } from './Report.Definitions'
 export class ReportGenerator {
   DescriptionHeaderLabel = 'Description'
   ValueHeaderLabel = 'Value'
-  public static GenerateReport(pr: IPullRequest, report: IReport): IReport {
-    report.Entries.forEach((entry) => {
-      entry.Info.Value = entry.ReportMeasureCallback(pr)
-      entry.Info.PresentationValue = entry.Info.Value
-    })
-    return report
-  }
 
   public Generate(pr: IPullRequest, report: IReport): string {
     const header = this.GenerateHeader(pr)
