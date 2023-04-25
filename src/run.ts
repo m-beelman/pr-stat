@@ -18,18 +18,18 @@ export const run = async (inputs: ConfigurationInputs): Promise<number> => {
   // get PR number
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
   const cliPullRequestData = await GetPullRequestData(github.context.issue.number)
-  const pullRequestDateModel = PullRequest.CreateFromJson(cliPullRequestData)
+  const pullRequestDataModel = PullRequest.CreateFromJson(cliPullRequestData)
   const generator = new ReportGenerator()
   const report = new Report()
   report.Entries = MetricTable
   report.Description = 'Test report'
-  report.Id = pullRequestDateModel.id.toString()
-  const reportAsString = generator.Generate(pullRequestDateModel, report)
+  report.Id = pullRequestDataModel.id.toString()
+  const reportAsString = generator.Generate(pullRequestDataModel, report)
   // generate random file name
   const fileName = Math.random().toString(36).substring(7) + '.md'
   // write report string to file
   fs.writeFileSync(fileName, `<!-- ${JSON.stringify(cliPullRequestData)} -->\n${reportAsString}`)
   //  core.info(`my name is ${inputs.name}`)
-  await AddCommentToPR(fileName, pullRequestDateModel.id)
+  await AddCommentToPR(fileName, pullRequestDataModel.id)
   return 12
 }
