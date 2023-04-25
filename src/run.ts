@@ -8,7 +8,16 @@ import { PullRequest } from './PullRequest.Definitions'
 import * as fs from 'fs'
 
 type Inputs = {
-  name: string
+  ShowAdditions: (string|number)
+  ShowDeleted: (string|number)
+  ShowNumberOfChangedFiles: (string|number)
+  ShowNumberOfCommits: (string|number)
+  ShowNumberOfReviews: (string|number)
+  ShowNumberOfComments: (string|number)
+  ShowPRLeadTime: (string|number)
+  ShowTimeSpendOnBranchBeforePrCreated: (string|number)
+  ShowTimeSpendOnBranchBeforePrMerged: (string|number)
+  ShowTimeToMergeAfterLastReview: (string|number)
 }
 
 // eslint-disable-next-line @typescript-eslint/require-await
