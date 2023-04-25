@@ -28,16 +28,7 @@ export class ReportGenerator {
     return title
   }
 
-  public GenerateCategoryTitle(measureCategory: MeasureCategory): H3Entry {
-    const title = { h3: `${MeasureCategoryTitleMap.get(measureCategory) || 'No category'}` }
-    return title
-  }
-
   public GenerateMeasureTable(pr: IPullRequest, report: IReport): MarkdownEntry[] {
-    report.Entries.forEach((entry) => {
-      entry.Info.Value = entry.ReportMeasureCallback(pr)
-    })
-
     const tables: MarkdownEntry[] = []
     const categories = new Set(report.Entries.map((entry) => entry.Info.MeasureCategory))
     categories.forEach((category) => {
@@ -48,7 +39,12 @@ export class ReportGenerator {
     return tables
   }
 
-  public GenerateCategoryTable(pr: IPullRequest, report: IReport, measureCategory: MeasureCategory): TableEntry {
+  private GenerateCategoryTitle(measureCategory: MeasureCategory): H3Entry {
+    const title = { h3: `${MeasureCategoryTitleMap.get(measureCategory) || 'No category'}` }
+    return title
+  }
+
+  private GenerateCategoryTable(pr: IPullRequest, report: IReport, measureCategory: MeasureCategory): TableEntry {
     const categoryEntries = report.Entries.filter((entry) => entry.Info.MeasureCategory === measureCategory)
     categoryEntries.forEach((entry) => {
       entry.Info.Value = entry.ReportMeasureCallback(pr)
