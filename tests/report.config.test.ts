@@ -49,18 +49,6 @@ test('Generate documentation for configuration items', () => {
   fs.writeFileSync('config.values.default.md', defaultConfigMeasures)
 })
 
-test('Generate input description for action.yaml file', () => {
-  const inputDescription = rows.map((row) => {
-    return `  ${row.Name}:
-    description: ${row.Description}
-    default: ${row.DefaultValue}
-    required: false`
-  })
-  const resultString = inputDescription.join('\n')
-  expect(resultString.length).toBeGreaterThan(0)
-  fs.writeFileSync('config.values.default.yaml', resultString)
-})
-
 test('Generate valid input keys and patch the action.yaml file', () => {
   const inputValues: { [index: string]: { description: string; default: string | number; required: boolean } } = {}
   rows.map((row) => {
