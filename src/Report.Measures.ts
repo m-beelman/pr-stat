@@ -6,6 +6,8 @@ import {
   GetTimeSpendOnBranchBeforePRCreated,
   GetTimeSpendOnBranchBeforePRMerged,
   GetTimeToMergeAfterLastReview,
+  GetTotalRuntimeForLastStatusCheckRun,
+  GetTimeSpendInPrForLastStatusCheckRun,
 } from './Report.Calculation'
 import { MeasureCategory, MeasurementInfo, ReportMeasurementEntry } from './Report.Definitions'
 import {
@@ -144,5 +146,33 @@ MetricTable.push(
       MeasureCategory.TimeRelatedMeasures
     ),
     (pr) => MillisecondsToReadableDuration(GetTimeToMergeAfterLastReview(pr))
+  )
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'pr_time_total_runtime_for_last_status_check_run',
+    new MeasurementInfo(
+      'Total runtime for last status check run (Workflow for PR)',
+      0,
+      0,
+      'ShowTimeTotalRuntimeForLastStatusCheckRun',
+      'yes',
+      MeasureCategory.StatusCheckRelated
+    ),
+    (pr) => MillisecondsToReadableDuration(GetTotalRuntimeForLastStatusCheckRun(pr))
+  )
+)
+MetricTable.push(
+  new ReportMeasurementEntry(
+    'pr_time_spend_in_pr_for_last_status_check_run',
+    new MeasurementInfo(
+      'Total time spend in last status check run on PR',
+      0,
+      0,
+      'ShowTimeSpendOnPrForLastStatusCheckRun',
+      'yes',
+      MeasureCategory.StatusCheckRelated
+    ),
+    (pr) => MillisecondsToReadableDuration(GetTimeSpendInPrForLastStatusCheckRun(pr))
   )
 )

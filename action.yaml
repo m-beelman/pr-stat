@@ -25,6 +25,14 @@ inputs:
     description: Number of comments (w/o review comments)
     default: 'yes'
     required: false
+  ShowTimeTotalRuntimeForLastStatusCheckRun:
+    description: Total runtime for last status check run (Workflow for PR)
+    default: 'yes'
+    required: false
+  ShowTimeSpendOnPrForLastStatusCheckRun:
+    description: Total time spend in last status check run on PR
+    default: 'yes'
+    required: false
   ShowPRLeadTime:
     description: PR lead time (from creation to close of PR)
     default: 'yes'

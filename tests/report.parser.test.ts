@@ -13,7 +13,7 @@ import {
 
 // This method can be used to update the sample data
 const UpdateSampleData = async () => {
-  const prData = await GetPullRequestData(45, 'm-beelman/advent-sifi')
+  const prData = await GetPullRequestData(381, 'aertslab/SCope')
   // write json to file
   fs.writeFileSync('prDatams.json', JSON.stringify(prData, null, 2))
 }
@@ -21,7 +21,7 @@ const UpdateSampleData = async () => {
 test('Gather PR-Data for unknown Repo', async () => {
   let exceptionRaised = false
   try {
-    const jsonData = await GetPullRequestData(45, 'm-beelman/advent-sifi')
+    const jsonData = await GetPullRequestData(381, 'aertslab437598493-qn/SCope-154d7884f5')
     const data = PullRequest.CreateFromJson(jsonData)
     console.log(data)
   } catch (e) {

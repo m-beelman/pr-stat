@@ -9,6 +9,8 @@ export const config = {
   ShowNumberOfCommits: core.getInput('ShowNumberOfCommits', { required: false }),
   ShowNumberOfReviews: core.getInput('ShowNumberOfReviews', { required: false }),
   ShowNumberOfComments: core.getInput('ShowNumberOfComments', { required: false }),
+  ShowTimeTotalRuntimeForLastStatusCheckRun: core.getInput('ShowTimeTotalRuntimeForLastStatusCheckRun', { required: false }),
+  ShowTimeSpendOnPrForLastStatusCheckRun: core.getInput('ShowTimeSpendOnPrForLastStatusCheckRun', { required: false }),
   ShowPRLeadTime: core.getInput('ShowPRLeadTime', { required: false }),
   ShowTimeSpendOnBranchBeforePrCreated: core.getInput('ShowTimeSpendOnBranchBeforePrCreated', { required: false }),
   ShowTimeSpendOnBranchBeforePrMerged: core.getInput('ShowTimeSpendOnBranchBeforePrMerged', { required: false }),
