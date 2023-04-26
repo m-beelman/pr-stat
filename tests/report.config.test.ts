@@ -43,9 +43,10 @@ test('Generate documentation for configuration items', () => {
   })
 
   const defaultConfigMeasures = tsMarkdown([configValues])
+
+  expect(defaultConfigMeasures.length).toBeGreaterThan(0)
   // write to file
   fs.writeFileSync('config.values.default.md', defaultConfigMeasures)
-  expect(defaultConfigMeasures.length).toBeGreaterThan(0)
 })
 
 test('Generate input description for action.yaml file', () => {
@@ -55,10 +56,8 @@ test('Generate input description for action.yaml file', () => {
     default: ${row.DefaultValue}
     required: false`
   })
-  console.log(inputDescription)
-  expect(1).toBe(1)
-
   const resultString = inputDescription.join('\n')
+  expect(resultString.length).toBeGreaterThan(0)
   fs.writeFileSync('config.values.default.yaml', resultString)
 })
 
@@ -72,9 +71,9 @@ test('Generate valid input keys and patch the action.yaml file', () => {
     inputs: { [index: string]: { description: string; default: string | number; required: boolean } }
   }
   actions.inputs = inputValues
-
-  fs.writeFileSync('action.yaml', yaml.dump(actions))
-  expect(1).toBe(1)
+  const serializedString = yaml.dump(actions)
+  expect(serializedString.length).toBeGreaterThan(0)
+  fs.writeFileSync('action.yaml', serializedString)
 })
 
 const CreateMetricTableCopy = (table: ReportMeasurementEntry[]): ReportMeasurementEntry[] => {
@@ -93,12 +92,16 @@ test('Update the MetricTable with config values from workflow', () => {
   inputValuesFromWorkflow.ShowPRLeadTime = 'yes'
   inputValuesFromWorkflow.ShowTimeSpendOnBranchBeforePrCreated = 'no'
   inputValuesFromWorkflow.ShowTimeSpendOnBranchBeforePrMerged = 'no'
-  inputValuesFromWorkflow.ShowTimeToMergeAfterLastReview = 'yes'
+  inputValuesFromWorkflow.ShowTimeToMergeAfterLastReview = 'no'
   // create copy of MetricTable
   const myMetricTable: ReportMeasurementEntry[] = CreateMetricTableCopy(MetricTable)
+  expect(
+    MetricTable.filter((item) => item.Info.ConfigurationName === 'ShowTimeToMergeAfterLastReview')[0].Info.ConfigValue
+  ).toBe('yes')
   UpdateConfigValues(inputValuesFromWorkflow, myMetricTable)
-  console.log(MetricTable)
-  expect(1).toBe(1)
+  expect(
+    myMetricTable.filter((item) => item.Info.ConfigurationName === 'ShowTimeToMergeAfterLastReview')[0].Info.ConfigValue
+  ).toBe('no')
 })
 
 test('Filter the MetricTable with config values from workflow', () => {
@@ -117,8 +120,13 @@ test('Filter the MetricTable with config values from workflow', () => {
   const myMetricTable: ReportMeasurementEntry[] = CreateMetricTableCopy(MetricTable)
   UpdateConfigValues(inputValuesFromWorkflow, myMetricTable)
   const activeMeasures = GetActiveMeasures(myMetricTable)
-  console.log(activeMeasures)
-  expect(1).toBe(1)
+  expect(
+    activeMeasures.filter((item) => item.Info.ConfigurationName === 'ShowTimeToMergeAfterLastReview')[0].Info
+      .ConfigValue
+  ).toBe('yes')
+  expect(
+    activeMeasures.filter((item) => item.Info.ConfigurationName === 'ShowTimeSpendOnBranchBeforePrMerged').length
+  ).toBe(0)
 })
 
 test('Generate configuration arguments for action code', () => {
@@ -126,20 +134,24 @@ test('Generate configuration arguments for action code', () => {
   rows.map((row) => {
     inputValues[row.Name] = { description: row.Description, default: row.DefaultValue, required: false }
   })
-  // open file
-  fs.writeFileSync('src/action.config.args.ts', '//GENERATED FILE FROM report.config.tests.ts - DO NOT EDIT!!!\n\n')
-  fs.writeFileSync('src/action.config.type.ts', '//GENERATED FILE FROM report.config.tests.ts - DO NOT EDIT!!!\n\n')
-  fs.appendFileSync('src/action.config.args.ts', "import * as core from '@actions/core'\n\n")
-  fs.appendFileSync('src/action.config.type.ts', 'type ConfigurationInputs = {\n')
-  fs.appendFileSync('src/action.config.args.ts', 'export const config = {\n')
+  const generatedArgumentFile = 'src/action.config.args.ts'
+  const generatedTypeFile = 'src/action.config.type.ts'
+
+  // first call is write to generate a new new file (with overwrite)
+  fs.writeFileSync(generatedArgumentFile, '//GENERATED FILE FROM report.config.tests.ts - DO NOT EDIT!!!\n\n')
+  fs.writeFileSync(generatedTypeFile, '//GENERATED FILE FROM report.config.tests.ts - DO NOT EDIT!!!\n\n')
+  // from now on we append to the files
+  fs.appendFileSync(generatedArgumentFile, "import * as core from '@actions/core'\n\n")
+  fs.appendFileSync(generatedArgumentFile, 'export const config = {\n')
+  fs.appendFileSync(generatedTypeFile, 'type ConfigurationInputs = {\n')
   for (const key in inputValues) {
     fs.appendFileSync(
-      'src/action.config.args.ts',
+      generatedArgumentFile,
       `  ${key}: core.getInput('${key}', { required: ${inputValues[key].required.toString()} }),\n`
     )
-    fs.appendFileSync('src/action.config.type.ts', `  '${key}': string | number,\n`)
+    fs.appendFileSync(generatedTypeFile, `  '${key}': string | number,\n`)
   }
-  fs.appendFileSync('src/action.config.args.ts', '}')
-  fs.appendFileSync('src/action.config.type.ts', '}\n')
-  expect(1).toBe(1)
+  fs.appendFileSync(generatedArgumentFile, '}\n')
+  fs.appendFileSync(generatedTypeFile, '}\n')
+  expect(fs.statSync(generatedArgumentFile).size).toBeGreaterThan(10)
 })
