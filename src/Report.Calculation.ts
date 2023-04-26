@@ -104,12 +104,20 @@ export const MillisecondsToReadableDuration = (leadTimeInMSec: number) => {
   else return `${days} Days`
 }
 
+export const GetMergedOrClosedDate = (pullRequest: IPullRequest): string => {
+  let mergedOrClosedAt = pullRequest.mergedAt
+
+  if (mergedOrClosedAt == null) mergedOrClosedAt = pullRequest.closedAt
+
+  return mergedOrClosedAt
+}
+
 export const GetLeadTimeForPullRequest = (pullRequest: IPullRequest) => {
   // parse createAt as date from string
   const createAt = new Date(pullRequest.createdAt)
-  const mergedAt = new Date(pullRequest.mergedAt)
+  const mergedOrClosedAt = new Date(GetMergedOrClosedDate(pullRequest))
 
-  const leadTime = mergedAt.getTime() - createAt.getTime()
+  const leadTime = mergedOrClosedAt.getTime() - createAt.getTime()
   return leadTime
 }
 
@@ -130,6 +138,10 @@ export const GetTimeSpendOnBranchBeforePRMerged = (pullRequest: IPullRequest) =>
   const mergedAtEvent = eventTimeline.find((event) => event.type === 'mergedAt')
   const firstCommitEvent = eventTimeline.find((event) => event.type === 'commit')
 
+  if (mergedAtEvent && mergedAtEvent.event_instance === null) {
+    return 0
+  }
+
   if (mergedAtEvent && firstCommitEvent && mergedAtEvent.date.getTime() > firstCommitEvent.date.getTime()) {
     return mergedAtEvent.date.getTime() - firstCommitEvent.date.getTime()
   }
@@ -141,6 +153,11 @@ export const GetTimeToMergeAfterLastReview = (pullRequest: IPullRequest) => {
   const eventTimeline = GenerateEventTimeline(pullRequest)
   const mergedAtEvent = eventTimeline.find((event) => event.type === 'mergedAt')
   const reviewEvents = eventTimeline.filter((event) => event.type === 'review')
+
+  if (mergedAtEvent && mergedAtEvent.event_instance === null) {
+    return 0
+  }
+
   if (reviewEvents.length <= 0) {
     return -1
   }
