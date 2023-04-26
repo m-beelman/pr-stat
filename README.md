@@ -1,103 +1,64 @@
-# typescript-action [![ts](https://github.com/int128/typescript-action/actions/workflows/ts.yaml/badge.svg)](https://github.com/int128/typescript-action/actions/workflows/ts.yaml)
+# Pull Request Report Action [![Pull Request Report Action](https://github.com/m-beelman/pr-stat/actions/workflows/ts.yaml/badge.svg)](https://github.com/m-beelman/pr-stat/actions/workflows/ts.yaml)
 
-This is a template of TypeScript action.
-Inspired from https://github.com/actions/typescript-action.
-
+This action is based on a template for TypeScript actions. [int128/typescript-action](https://github.com/int128/typescript-action/)
 
 ## Features
 
-- Ready to develop with the minimum configs
-  - Yarn
-  - Prettier
-  - ESLint
-  - tsconfig
-  - Jest
-- Automated continuous release
-- Keep consistency of generated files
-- Shipped with Renovate config
+- Reading and generate some basic PR measures from every merged PR
+- Provide these measures as a comment on the merged PR
+- Provide the raw measures as a hidden JSON data in comment
 
+More features are planned for the future. If you have any suggestions, please
+open an issue or create a PR.
 
 ## Getting Started
 
-Click `Use this template` to create a repository.
+Like all other actions in GitHub, these are referenced in your workflow files
+and run on GitHub runners or self-hosted GitHub runners. As an example, let's
+create a workflow file that is triggered by closing a PR.
 
-An initial release `v0.0.0` is automatically created by GitHub Actions.
-You can see the generated files in `dist` directory on the tag.
-
-Then checkout your repository and test it. Node.js is required.
-
-```console
-$ git clone https://github.com/your/repo.git
-
-$ yarn
-$ yarn test
-```
-
-Create a pull request for a change.
-
-```console
-$ git checkout -b feature
-$ git commit -m 'Add feature'
-$ gh pr create -fd
-```
-
-Once you merge a pull request, a new minor release (such as `v0.1.0`) is created.
-
-
-### Stable release
-
-When you want to create a stable release, change the major version in [release workflow](.github/workflows/release.yaml).
+Create a workflow file in your repository at e.g.
+`.github/workflows/pr-report.yaml` with the following content:
 
 ```yaml
-      - uses: int128/release-typescript-action@v1
-        with:
-          major-version: 1
-```
+name: Add Pull Request Report to PR when closed
 
-Then a new stable release `v1.0.0` is created.
+on:
+  pull_request:
+    # only run when PR is closed
+    types: [closed]
 
-
-## Specification
-
-To run this action, create a workflow as follows:
-
-```yaml
 jobs:
-  build:
+  add-pr-report-as-comment:
     runs-on: ubuntu-latest
+    name: Generate report and add it as comment to the PR
     steps:
-      - uses: int128/typescript-action@v1
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Generate PR report
+        uses: m-beelman/pr-stat@cb6a35da9978ac6d08bbe4f707f5663105596857 # v0.14.0
         with:
-          name: hello
+          ShowNumberOfChangedFiles: 'no'
+          ShowTimeToMergeAfterLastReview: 'no'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 ```
 
-### Inputs
+**Note**
+The referenced actions are pinned to a specific commit. This is to ensure that
+the action is not changed without you knowing. You can find the latest commit
+for each action in the Release notes of the action. Use dependabot to keep your
+actions up to date. Dependabot will take care of updating the commit hash for
+you. See [Dependabot for GitHub Actions](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/keeping-your-actions-up-to-date-with-dependabot).
 
-| Name | Default | Description
-|------|----------|------------
-| `name` | (required) | example input
+### Configuration
 
+At the moment, the configuration of the action is limited to the individual
+metrics. In the example above we see that we do not want to see the two metrics
+`ShowNumberOfChangedFiles` and `ShowTimeToMergeAfterLastReview` in the pull
+request report.
 
-### Outputs
+With more features, the configuration options will also increase.
 
-| Name | Description
-|------|------------
-| `example` | example output
-
-
-## Development
-
-### Release workflow
-
-When a pull request is merged into main branch, a new minor release is created by GitHub Actions.
-See https://github.com/int128/release-typescript-action for details.
-
-### Keep consistency of generated files
-
-If a pull request needs to be fixed by Prettier, an additional commit to fix it will be added by GitHub Actions.
-See https://github.com/int128/update-generated-files-action for details.
-
-### Dependency update
-
-You can enable Renovate to update the dependencies.
-This repository is shipped with the config https://github.com/int128/typescript-action-renovate-config.
+The overview of all metrics and their default values can be found in the
+[metrics documentation](./config.md).

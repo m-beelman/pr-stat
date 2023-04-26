@@ -45,8 +45,11 @@ test('Generate documentation for configuration items', () => {
   const defaultConfigMeasures = tsMarkdown([configValues])
 
   expect(defaultConfigMeasures.length).toBeGreaterThan(0)
+  // read content from file
+  const fileContent = fs.readFileSync('config.values.default.md', 'utf8')
+  const mergedContent = fileContent.concat('\n').concat(defaultConfigMeasures)
   // write to file
-  fs.writeFileSync('config.values.default.md', defaultConfigMeasures)
+  fs.writeFileSync('config.md', mergedContent)
 })
 
 test('Generate valid input keys and patch the action.yaml file', () => {
