@@ -10,7 +10,6 @@ import {
   GetTimeSpendOnBranchBeforePRMerged,
   GetTimeToMergeAfterLastReview,
   GetTotalRuntimeForLastStatusCheckRun,
-  MillisecondsToReadableDuration,
 } from '../src/Report.Calculation'
 import { DataFromBigPullRequest } from './pr_sample_data'
 

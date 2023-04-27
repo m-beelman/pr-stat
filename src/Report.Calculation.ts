@@ -173,15 +173,17 @@ export const GetTimeToMergeAfterLastReview = (pullRequest: IPullRequest) => {
 
 export const GetTotalRuntimeForLastStatusCheckRun = (pullRequest: IPullRequest) => {
   const eventTimeline = GenerateEventTimeline(pullRequest)
-  const statusCheckEvents = eventTimeline.filter((event) => event.type === 'statusCheck')
+  const statusCheckEvents = eventTimeline
+    .filter((event) => event.type === 'statusCheck')
+    .map((event) => event.event_instance as StatusCheck)
+    .filter((statusCheck) => statusCheck.status == 'COMPLETED')
 
   if (statusCheckEvents.length <= 0) {
     return 0
   }
 
   let totalTime = 0
-  statusCheckEvents.forEach((statusCheckEvent) => {
-    const statusCheck = statusCheckEvent.event_instance as StatusCheck
+  statusCheckEvents.forEach((statusCheck) => {
     totalTime += new Date(statusCheck.completedAt).getTime() - new Date(statusCheck.startedAt).getTime()
   })
 
@@ -190,16 +192,20 @@ export const GetTotalRuntimeForLastStatusCheckRun = (pullRequest: IPullRequest) 
 
 export const GetTimeSpendInPrForLastStatusCheckRun = (pullRequest: IPullRequest) => {
   const eventTimeline = GenerateEventTimeline(pullRequest)
-  const statusCheckEvents = eventTimeline.filter((event) => event.type === 'statusCheck')
+  const statusCheckEvents = eventTimeline
+    .filter((event) => event.type === 'statusCheck')
+    .map((event) => event.event_instance as StatusCheck)
+    .filter((statusCheck) => statusCheck.status == 'COMPLETED')
 
   if (statusCheckEvents.length <= 0) {
     return 0
   }
+
   let earliestStart = new Date()
   let latestCompletion = new Date(0, 0, 0)
   statusCheckEvents.forEach((statusCheckEvent) => {
-    const completedDate = new Date((statusCheckEvent.event_instance as StatusCheck).completedAt)
-    const startedDate = new Date((statusCheckEvent.event_instance as StatusCheck).startedAt)
+    const completedDate = new Date(statusCheckEvent.completedAt)
+    const startedDate = new Date(statusCheckEvent.startedAt)
     if (startedDate < earliestStart) {
       earliestStart = startedDate
     }
